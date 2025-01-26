@@ -1,1 +1,1405 @@
-<a href="tokenpulse/list-by-mc/">Tokenpulse</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TokenPulse</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: block;
+            transition: background 0.3s ease;
+            cursor: none; /* Hide default cursor */
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #00ff88;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 100px;
+        }
+
+        .tradingview-widget-container {
+            width: 100%;
+            margin-top: -20px;
+        }
+
+        .ticker-wrap {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px 0;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .ticker {
+            display: flex;
+            animation: ticker 30s linear infinite;
+            white-space: nowrap;
+        }
+
+        .ticker-item {
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            color: #00ff88;
+            font-weight: 500;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .main-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid #00ff88;
+            border-radius: 12px;
+            color: #00ff88;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .main-link:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .grid-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+            padding: 0 20px;
+        }
+
+        .row {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            justify-content: flex-start; /* Align to start of row */
+        }
+
+        .column {
+            flex: 1;
+            max-width: calc(50% - 15px); /* 50% width minus half of gap */
+            min-width: calc(50% - 15px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            min-height: 200px; /* Ensure space for loading state */
+        }
+
+        .column h2 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            color: #fff; /* Reset to white color */
+        }
+
+        .card {
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 12px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .card-content {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card img.token-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .card .info {
+            flex-grow: 1;
+        }
+
+        .card .name {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .card .symbol {
+            font-size: 0.8rem;
+            color: #00ff88;
+        }
+
+        .card .market-cap {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .time-since {
+            font-size: 0.75rem;
+            color: rgba(0, 255, 136, 0.7);
+            margin-left: auto;
+            padding-left: 12px;
+            white-space: nowrap;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .refresh-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid #00ff88;
+            border-radius: 12px;
+            color: #00ff88;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-button:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .refresh-button.spinning::after {
+            content: "↻";
+            display: inline-block;
+            margin-left: 8px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .toggle-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .toggle-switch {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 4px;
+            gap: 4px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-option {
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            color: #fff;
+            background: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .toggle-option.active {
+            background: #00ff88;
+            color: #1a1a2e;
+            transform: scale(1.05);
+        }
+
+        body.jupiter-theme {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        body.raydium-theme {
+            background: linear-gradient(135deg, #1f1f3a 0%, #2a1f3d 100%);
+        }
+
+        .loading-bar {
+            height: 2px;
+            background: linear-gradient(90deg, #00ff88 0%, #00ffee 100%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .loading-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #00ff88;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: #00ff88;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #00ffee;
+        }
+
+        /* Custom Cursor Styles */
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .cursor-dot {
+            width: 4px;
+            height: 4px;
+            background: #00ff88;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+        }
+
+        /* Hover effect on interactive elements */
+        a:hover ~ .custom-cursor,
+        button:hover ~ .custom-cursor,
+        .card:hover ~ .custom-cursor {
+            transform: scale(1.5);
+            background: rgba(0, 255, 136, 0.15);
+            border-color: rgba(0, 255, 136, 0.8);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+        }
+
+        /* Click animations */
+        .click-animation {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        .click-ring {
+            position: absolute;
+            border: 2px solid #00ff88;
+            border-radius: 50%;
+            animation: clickRipple 0.8s cubic-bezier(0.1, 0, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .click-ring:nth-child(1) {
+            width: 20px;
+            height: 20px;
+            animation-delay: 0s;
+        }
+
+        .click-ring:nth-child(2) {
+            width: 30px;
+            height: 30px;
+            animation-delay: 0.1s;
+        }
+
+        .click-ring:nth-child(3) {
+            width: 40px;
+            height: 40px;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes clickRipple {
+            0% {
+                transform: scale(0);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        /* Pulse animation for cursor dot */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .cursor-dot {
+            animation: pulse 2s infinite;
+        }
+
+        /* Toast notification style */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: 1px solid #00ff88;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        /* Filter Panel Styles */
+        .filter-panel {
+            width: 300px;
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            height: fit-content;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-panel h2 {
+            color: #00ff88;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+        }
+
+        .filter-section {
+            margin-bottom: 30px;
+        }
+
+        .filter-section h3 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .range-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+            width: 100%;
+            box-sizing: border-box; /* Add this */
+        }
+
+        .range-inputs input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: #fff;
+            width: calc(100% - 24px); /* Adjust width accounting for padding */
+            box-sizing: border-box; /* Add this */
+        }
+
+        .limit-input {
+            width: calc(100% - 24px); /* Adjust width accounting for padding */
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: #fff;
+            margin-bottom: 15px;
+            box-sizing: border-box; /* Add this */
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .filter-actions button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .apply-filters {
+            background: #00ff88;
+            color: #1a1a2e;
+        }
+
+        .reset-filters {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Search Results styling to match panels */
+        .search-results {
+            display: none;
+            width: 800px;
+            margin-top: 20px;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-results h2 {
+            color: #00ff88;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .results-search {
+            margin-bottom: 20px;
+        }
+
+        .results-search input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            color: #fff;
+        }
+
+        .results-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Hide refresh button in search results */
+        .search-results .refresh-button {
+            display: none;
+        }
+
+        /* Loading overlay styles */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 26, 46, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50%;
+            border-top-color: #00ff88;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Back Button Styling */
+        .back-button {
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-button:hover {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+
+        .back-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Results Container */
+        .search-results-container {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            padding: 0 20px;
+        }
+
+        /* Results Content */
+        .results-content {
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            width: 100%;
+        }
+
+        /* Results Header */
+        .results-header {
+            margin-bottom: 20px;
+        }
+
+        /* Search Input in Results */
+        .results-search {
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .results-search input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            color: #fff;
+            box-sizing: border-box;
+        }
+
+        /* Results Grid */
+        .results-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Panel Header Styles */
+        .column h2 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            color: #fff; /* Reset to white color */
+        }
+
+        /* Refresh Button Styles */
+        .panel-refresh {
+            background: none;
+            border: none;
+            color: #00ff88;
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .panel-refresh:hover {
+            transform: rotate(30deg);
+        }
+
+        .panel-refresh.spinning {
+            animation: spin 1s linear infinite;
+        }
+
+        /* SVG Icon Style */
+        .refresh-icon {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+    </style>
+</head>
+<body class="jupiter-theme">
+    <!-- Add cursor elements at the start of body -->
+    <div class="cursor-dot"></div>
+    <div class="custom-cursor"></div>
+
+    <div class="toggle-container">
+        <div class="toggle-switch">
+            <button class="toggle-option" id="raydiumBtn">
+                <img src="https://cryptologos.cc/logos/raydium-ray-logo.png?v=040" alt="Raydium" width="20" height="20" style="vertical-align: middle; margin-right: 8px;">
+                Raydium
+            </button>
+            <button class="toggle-option active" id="jupiterBtn">
+                <img src="https://jup.ag/_next/image?url=%2Fsvg%2Fjupiter-logo.png&w=48&q=75" alt="Jupiter" width="20" height="20" style="vertical-align: middle; margin-right: 8px;">
+                Jupiter
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>TokenPulse</h1>
+        <!-- TradingView Widget BEGIN -->
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+            {
+            "symbols": [
+                {
+                "proName": "BITSTAMP:BTCUSD",
+                "title": "Bitcoin"
+                },
+                {
+                "proName": "BITSTAMP:ETHUSD",
+                "title": "Ethereum"
+                },
+                {
+                "description": "Solana",
+                "proName": "COINBASE:SOLUSD"
+                },
+                {
+                "description": "Jupiter",
+                "proName": "KUCOIN:JUPUSDT"
+                },
+                {
+                "description": "Raydium",
+                "proName": "KUCOIN:RAYUSDT"
+                },
+                {
+                "description": "Bonk",
+                "proName": "KUCOIN:BONKUSDT"
+                },
+                {
+                "description": "Orca",
+                "proName": "KUCOIN:ORCAUSDT"
+                },
+                {
+                "description": "Pyth",
+                "proName": "BINANCE:PYTHUSDT"
+                },
+                {
+                "description": "DogeCoin",
+                "proName": "BINANCE:DOGEUSDT"
+                },
+                {
+                "description": "Cardano",
+                "proName": "BINANCE:ADAUSDT"
+                },
+                {
+                "description": "Ripple",
+                "proName": "BINANCE:XRPUSDT"
+                },
+                {
+                "description": "Litecoin",
+                "proName": "BITFINEX:LTCUSD"
+                },
+                {
+                "description": "Polkadot",
+                "proName": "BINANCE:DOTUSDT"
+                },
+                {
+                "description": "Shiba Inu",
+                "proName": "BINANCE:SHIBUSDT"
+                },
+                {
+                "description": "Avalanche",
+                "proName": "BINANCE:AVAXUSDT"
+                },
+                {
+                "description": "Chainlink",
+                "proName": "BINANCE:LINKUSDT"
+                },
+                {
+                "description": "Polygon",
+                "proName": "BINANCE:MATICUSDT"
+                },
+                {
+                "description": "Uniswap",
+                "proName": "COINBASE:UNIUSD"
+                },
+                {
+                "description": "Binance Coin",
+                "proName": "BINANCE:BNBUSDT"
+                },
+                {
+                "description": "Stellar",
+                "proName": "BINANCE:XLMUSDT"
+                }
+            ],
+            "showSymbolLogo": true,
+            "colorTheme": "dark",
+            "isTransparent": true,
+            "displayMode": "adaptive",
+            "locale": "en"
+            }
+            </script>
+        </div>
+        <!-- TradingView Widget END -->
+        
+        <div class="grid-container">
+            <!-- Single Filter Panel -->
+            <div class="filter-panel">
+                <h2>Filter Coins</h2>
+                <div class="filter-section">
+                    <h3>Market Cap Range</h3>
+                    <div class="range-inputs">
+                        <input type="number" id="minMC" placeholder="Min Market Cap" min="0">
+                        <input type="number" id="maxMC" placeholder="Max Market Cap" min="0">
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3>Limit Results</h3>
+                    <input type="number" id="limit" class="limit-input" placeholder="Max results" min="1" max="20" value="10">
+                </div>
+
+                <div class="filter-actions">
+                    <button class="reset-filters">Reset</button>
+                    <button class="apply-filters">Apply</button>
+                </div>
+            </div>
+
+            <!-- Main Grid Content -->
+            <div class="main-grid">
+                <div class="row">
+                    <div class="column" id="latestCoins">
+                        <h2>
+                            Latest Coins
+                            <button class="panel-refresh" title="Refresh panel">
+                                <svg class="refresh-icon" viewBox="0 0 24 24">
+                                    <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                                </svg>
+                            </button>
+                        </h2>
+                        <div class="list"></div>
+                    </div>
+                    <div class="column" id="graduatingSoon">
+                        <h2>
+                            Graduating... (90K-110K MC)
+                            <button class="panel-refresh" title="Refresh panel">
+                                <svg class="refresh-icon" viewBox="0 0 24 24">
+                                    <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                                </svg>
+                            </button>
+                        </h2>
+                        <div class="list"></div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="column" id="recentlyGraduated">
+                        <h2>
+                            Recently Graduated
+                            <button class="panel-refresh" title="Refresh panel">
+                                <svg class="refresh-icon" viewBox="0 0 24 24">
+                                    <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                                </svg>
+                            </button>
+                        </h2>
+                        <div class="list"></div>
+                    </div>
+                    <div class="column" id="midRange">
+                        <h2>
+                            Latest (100K-200K MC)
+                            <button class="panel-refresh" title="Refresh panel">
+                                <svg class="refresh-icon" viewBox="0 0 24 24">
+                                    <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                                </svg>
+                            </button>
+                        </h2>
+                        <div class="list"></div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="column" id="highMC">
+                        <h2>
+                            200K+ MC
+                            <button class="panel-refresh" title="Refresh panel">
+                                <svg class="refresh-icon" viewBox="0 0 24 24">
+                                    <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                                </svg>
+                            </button>
+                        </h2>
+                        <div class="list"></div>
+                    </div>
+                    <div class="column" id="lowRange">
+                        <h2>
+                            Latest (15K-40K MC)
+                            <button class="panel-refresh" title="Refresh panel">
+                                <svg class="refresh-icon" viewBox="0 0 24 24">
+                                    <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                                </svg>
+                            </button>
+                        </h2>
+                        <div class="list"></div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="column" id="midLowRange">
+                        <h2>
+                            Latest (40K-90K MC)
+                            <button class="panel-refresh" title="Refresh panel">
+                                <svg class="refresh-icon" viewBox="0 0 24 24">
+                                    <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                                </svg>
+                            </button>
+                        </h2>
+                        <div class="list"></div>
+                    </div>
+                </div>
+
+                <!-- Search Results -->
+                <div class="search-results">
+                    <div class="search-results-container">
+                        <div class="results-content">
+                            <div class="results-header">
+                                <button class="back-button">
+                                    <span>←</span>
+                                    <span>Back to Dashboard</span>
+                                </button>
+                            </div>
+                            <div class="results-search">
+                                <input type="text" placeholder="Search in results..." id="resultsSearchInput">
+                            </div>
+                            <div class="results-grid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="refresh-button">Refresh All Panels</button>
+    </div>
+
+    <div class="footer">
+        <p>TokenPulse is a tool for finding and swapping SOL tokens on Raydium and Jupiter. Not affiliated with either platform.</p>
+    </div>
+
+    <script>
+        // Define API headers globally with the correct API key
+        const API_HEADERS = {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV0dmVndW1heHV4bnBtenptaW1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIwMzE0ODgsImV4cCI6MjA0NzYwNzQ4OH0.60YKN6SO6JlpSCPABPRuVyOBpXb7Wtg3yKNWjKBAskk',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV0dmVndW1heHV4bnBtenptaW1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIwMzE0ODgsImV4cCI6MjA0NzYwNzQ4OH0.60YKN6SO6JlpSCPABPRuVyOBpXb7Wtg3yKNWjKBAskk',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        };
+
+        function formatTimeSince(dateString) {
+            const created = new Date(dateString);
+            const now = new Date();
+            const diffInSeconds = Math.floor((now - created) / 1000);
+
+            if (diffInSeconds < 60) {
+                return `${diffInSeconds}s ago`;
+            } else if (diffInSeconds < 3600) {
+                const minutes = Math.floor(diffInSeconds / 60);
+                return `${minutes}m ago`;
+            } else if (diffInSeconds < 86400) {
+                const hours = Math.floor(diffInSeconds / 3600);
+                return `${hours}h ago`;
+            } else {
+                const days = Math.floor(diffInSeconds / 86400);
+                return `${days}d ago`;
+            }
+        }
+
+        const raydiumBtn = document.getElementById('raydiumBtn');
+        const jupiterBtn = document.getElementById('jupiterBtn');
+        let isJupiter = true;
+
+        function updateLinks() {
+            const gridContainer = document.querySelector('.grid-container');
+            gridContainer.classList.add('fade');
+            
+            setTimeout(() => {
+                const coinLinks = document.querySelectorAll('.swap-link');
+                document.body.className = isJupiter ? 'jupiter-theme' : 'raydium-theme';
+                
+                coinLinks.forEach(link => {
+                    const coinAddress = link.href.split('SOL-')[1]?.split('&')[0] || link.href.split('outputMint=')[1];
+                    const imgElement = link.querySelector('img');
+                    
+                    if (isJupiter) {
+                        link.href = `https://jup.ag/swap/SOL-${coinAddress}`;
+                        imgElement.src = 'https://jup.ag/_next/image?url=%2Fsvg%2Fjupiter-logo.png&w=48&q=75';
+                        imgElement.style.width = '24px';
+                        imgElement.style.height = '24px';
+                        jupiterBtn.classList.add('active');
+                        raydiumBtn.classList.remove('active');
+                    } else {
+                        link.href = `https://raydium.io/swap/?inputMint=sol&outputMint=${coinAddress}`;
+                        imgElement.src = 'https://cryptologos.cc/logos/raydium-ray-logo.png?v=040';
+                        imgElement.style.width = '24px';
+                        imgElement.style.height = '24px';
+                        raydiumBtn.classList.add('active');
+                        jupiterBtn.classList.remove('active');
+                    }
+                });
+                
+                setTimeout(() => {
+                    gridContainer.classList.remove('fade');
+                }, 150);
+            }, 150);
+        }
+
+        raydiumBtn.addEventListener('click', () => {
+            if (isJupiter) {
+                isJupiter = false;
+                updateLinks();
+            }
+        });
+
+        jupiterBtn.addEventListener('click', () => {
+            if (!isJupiter) {
+                isJupiter = true;
+                updateLinks();
+            }
+        });
+
+        async function fetchCoins(url, containerId) {
+            const container = document.querySelector(`#${containerId}`);
+            const list = container.querySelector('.list');
+            
+            // Add loading bar
+            const loadingBar = document.createElement('div');
+            loadingBar.className = 'loading-bar';
+            container.insertBefore(loadingBar, container.firstChild);
+            
+            // Add loading text
+            list.innerHTML = '<div class="loading-text">Loading...</div>';
+            
+            try {
+                // Animate loading bar
+                loadingBar.style.width = '60%';
+                
+                const response = await axios.get(url, { headers: API_HEADERS });
+                const coins = response.data;
+                
+                // Complete loading bar
+                loadingBar.style.width = '100%';
+                
+                // Clear loading text
+                list.innerHTML = '';
+
+                coins.forEach(coin => {
+                    const card = createCoinCard(coin);
+                    list.appendChild(card);
+                });
+
+                // Remove loading bar after a short delay
+                setTimeout(() => {
+                    loadingBar.remove();
+                }, 500);
+
+            } catch (error) {
+                console.error('Error fetching coins:', error);
+                list.innerHTML = '<p>Error loading data.</p>';
+                loadingBar.style.background = '#ff3366';
+                loadingBar.style.width = '100%';
+            }
+        }
+
+        async function refreshAllData() {
+            const fetchPromises = [
+                fetchCoins('https://utvegumaxuxnpmzzmimk.supabase.co/rest/v1/tokens?limit=5&order=created_time.desc&select=*', 'latestCoins'),
+                fetchCoins('https://utvegumaxuxnpmzzmimk.supabase.co/rest/v1/tokens?and=(market_cap.gt.90000,market_cap.lt.110000)&limit=5&order=created_time.desc&select=*', 'graduatingSoon'),
+                fetchCoins('https://utvegumaxuxnpmzzmimk.supabase.co/rest/v1/tokens?limit=5&order=created_time.desc&select=*&bonding_curve_completed=is.true', 'recentlyGraduated'),
+                fetchCoins('https://utvegumaxuxnpmzzmimk.supabase.co/rest/v1/tokens?and=(market_cap.gt.100000,market_cap.lt.200000)&limit=5&order=created_time.desc&select=*', 'midRange'),
+                fetchCoins('https://utvegumaxuxnpmzzmimk.supabase.co/rest/v1/tokens?market_cap=gt.200000&limit=5&order=created_time.desc&select=*', 'highMC'),
+                fetchCoins('https://utvegumaxuxnpmzzmimk.supabase.co/rest/v1/tokens?and=(market_cap.gt.15000,market_cap.lt.40000)&limit=5&order=created_time.desc&select=*', 'lowRange'),
+                fetchCoins('https://utvegumaxuxnpmzzmimk.supabase.co/rest/v1/tokens?and=(market_cap.gt.40000,market_cap.lt.90000)&limit=5&order=created_time.desc&select=*', 'midLowRange')
+            ];
+
+            // Load each widget sequentially for smooth loading
+            for (const promise of fetchPromises) {
+                await promise;
+                await new Promise(resolve => setTimeout(resolve, 100)); // Small delay between each widget
+            }
+        }
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', () => {
+            refreshAllData();
+        });
+
+        // Manual refresh button
+        const refreshButton = document.querySelector('.refresh-button');
+        refreshButton.addEventListener('click', () => {
+            refreshButton.classList.add('spinning');
+            refreshAllData().then(() => {
+                setTimeout(() => {
+                    refreshButton.classList.remove('spinning');
+                }, 1000);
+            });
+        });
+
+        // Custom Cursor and Click Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const cursor = document.querySelector('.custom-cursor');
+            const cursorDot = document.querySelector('.cursor-dot');
+
+            // Move custom cursor with mouse
+            document.addEventListener('mousemove', (e) => {
+                const x = e.clientX;
+                const y = e.clientY;
+                
+                // Add slight delay to main cursor for smooth effect
+                requestAnimationFrame(() => {
+                    cursor.style.left = x - 10 + 'px';
+                    cursor.style.top = y - 10 + 'px';
+                });
+                
+                // Dot follows immediately
+                cursorDot.style.left = x - 2 + 'px';
+                cursorDot.style.top = y - 2 + 'px';
+            });
+
+            // Enhanced click animation
+            document.addEventListener('click', (e) => {
+                const clickAnim = document.createElement('div');
+                clickAnim.className = 'click-animation';
+                clickAnim.style.left = e.clientX - 20 + 'px';
+                clickAnim.style.top = e.clientY - 20 + 'px';
+                
+                // Create multiple rings for the animation
+                for (let i = 0; i < 3; i++) {
+                    const ring = document.createElement('div');
+                    ring.className = 'click-ring';
+                    clickAnim.appendChild(ring);
+                }
+                
+                document.body.appendChild(clickAnim);
+
+                // Remove animation element after it's done
+                setTimeout(() => {
+                    clickAnim.remove();
+                }, 1000);
+            });
+
+            // Enhanced hover effects
+            document.querySelectorAll('a, button, .card').forEach(element => {
+                element.addEventListener('mouseenter', () => {
+                    cursor.style.transform = 'scale(1.5)';
+                    cursor.style.background = 'rgba(0, 255, 136, 0.15)';
+                    cursor.style.borderColor = 'rgba(0, 255, 136, 0.8)';
+                    cursor.style.boxShadow = '0 0 20px rgba(0, 255, 136, 0.4)';
+                });
+
+                element.addEventListener('mouseleave', () => {
+                    cursor.style.transform = 'scale(1)';
+                    cursor.style.background = 'rgba(0, 255, 136, 0.1)';
+                    cursor.style.borderColor = 'rgba(0, 255, 136, 0.5)';
+                    cursor.style.boxShadow = '0 0 10px rgba(0, 255, 136, 0.3)';
+                });
+            });
+        });
+
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+
+        // Toast notification function
+        function showToast(message) {
+            // Remove existing toast if any
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            // Create and show new toast
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            // Trigger reflow for animation
+            toast.offsetHeight;
+            toast.classList.add('show');
+
+            // Remove toast after delay
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 2000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchResults = document.querySelector('.search-results');
+            const mainGrid = document.querySelector('.main-grid');
+            const applyFiltersBtn = document.querySelector('.apply-filters');
+            const resetFiltersBtn = document.querySelector('.reset-filters');
+            const backButton = document.querySelector('.back-button');
+            const filterPanel = document.querySelector('.filter-panel');
+
+            // Apply Filters
+            applyFiltersBtn.addEventListener('click', async () => {
+                const loadingOverlay = document.createElement('div');
+                loadingOverlay.className = 'loading-overlay';
+                loadingOverlay.innerHTML = '<div class="loading-spinner"></div>';
+                document.body.appendChild(loadingOverlay);
+
+                try {
+                    const minMC = document.getElementById('minMC').value;
+                    const maxMC = document.getElementById('maxMC').value;
+                    const limit = document.getElementById('limit').value;
+
+                    let url = 'https://utvegumaxuxnpmzzmimk.supabase.co/rest/v1/tokens?select=*';
+
+                    if (minMC && maxMC) {
+                        url += `&and=(market_cap.gt.${minMC},market_cap.lt.${maxMC})`;
+                    } else if (minMC) {
+                        url += `&market_cap=gt.${minMC}`;
+                    } else if (maxMC) {
+                        url += `&market_cap=lt.${maxMC}`;
+                    }
+
+                    url += '&order=created_time.desc';
+                    url += `&limit=${Math.min(limit || 10, 20)}`;
+
+                    console.log('Fetching URL:', url);
+
+                    const response = await axios.get(url, { headers: API_HEADERS });
+                    const results = response.data;
+                    
+                    window.currentResults = results;
+                    
+                    document.querySelectorAll('.row').forEach(row => row.style.display = 'none');
+                    searchResults.classList.add('active');
+                    
+                    displayResults(results);
+                } catch (error) {
+                    console.error('Error:', error);
+                    const resultsGrid = document.querySelector('.results-grid');
+                    resultsGrid.innerHTML = '<div class="error-text">Error loading results</div>';
+                } finally {
+                    loadingOverlay.remove();
+                }
+            });
+
+            // Reset Filters
+            resetFiltersBtn.addEventListener('click', () => {
+                document.getElementById('minMC').value = '';
+                document.getElementById('maxMC').value = '';
+                document.getElementById('limit').value = '10';
+            });
+
+            // Back Button
+            backButton.addEventListener('click', () => {
+                searchResults.classList.remove('active');
+                document.querySelectorAll('.row').forEach(row => row.style.display = 'flex');
+            });
+        });
+
+        // Function to display results
+        function displayResults(results) {
+            const resultsGrid = document.querySelector('.results-grid');
+            
+            if (results.length === 0) {
+                resultsGrid.innerHTML = '<div class="no-results">No tokens found matching your criteria</div>';
+                return;
+            }
+
+            resultsGrid.innerHTML = '';
+            results.forEach(coin => {
+                const card = createCoinCard(coin);
+                resultsGrid.appendChild(card);
+            });
+        }
+
+        // Search in results functionality
+        const resultsSearchInput = document.getElementById('resultsSearchInput');
+        resultsSearchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredResults = window.currentResults.filter(coin => 
+                coin.name.toLowerCase().includes(searchTerm) || 
+                coin.symbol.toLowerCase().includes(searchTerm)
+            );
+            displayResults(filteredResults);
+        });
+
+        // Add click handler for copying address
+        function createCoinCard(coin) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.setAttribute('data-address', coin.address);
+            
+            const swapUrl = isJupiter 
+                ? `https://jup.ag/swap/SOL-${coin.address}`
+                : `https://raydium.io/swap/?inputMint=sol&outputMint=${coin.address}`;
+            const logoUrl = isJupiter
+                ? 'https://jup.ag/_next/image?url=%2Fsvg%2Fjupiter-logo.png&w=48&q=75'
+                : 'https://cryptologos.cc/logos/raydium-ray-logo.png?v=040';
+
+            card.innerHTML = `
+                <div class="card-content">
+                    <img class="token-img" src="${coin.imageUrl}" alt="${coin.name}">
+                    <div class="info">
+                        <div class="name">${coin.name}</div>
+                        <div class="symbol">${coin.symbol}</div>
+                        <div class="market-cap">MC: $${coin.market_cap.toLocaleString()}</div>
+                    </div>
+                    <div class="time-since">${formatTimeSince(coin.created_time)}</div>
+                    <div class="actions">
+                        <a href="${swapUrl}" class="swap-link" target="_blank">
+                            <img src="${logoUrl}" alt="Swap" style="width: 24px; height: 24px;">
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            // Add click handler for copying address
+            card.addEventListener('click', (e) => {
+                if (!e.target.closest('.swap-link')) {
+                    const address = card.getAttribute('data-address');
+                    copyToClipboard(address);
+                    showToast('Address copied to clipboard!');
+                }
+            });
+
+            return card;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add refresh functionality to each panel
+            const panels = [
+                { id: 'latestCoins', url: 'https://utvegumaxuxnpmzzmimk.supabase.co/rest/v1/tokens?limit=5&order=created_time.desc&select=*' },
+                { id: 'graduatingSoon', url: 'https://utvegumaxuxnpmzzmimk.supabase.co/rest/v1/tokens?and=(market_cap.gt.90000,market_cap.lt.110000)&limit=5&order=created_time.desc&select=*' },
+                { id: 'recentlyGraduated', url: 'https://utvegumaxuxnpmzzmimk.supabase.co/rest/v1/tokens?limit=5&order=created_time.desc&select=*&bonding_curve_completed=is.true' },
+                { id: 'midRange', url: 'https://utvegumaxuxnpmzzmimk.supabase.co/rest/v1/tokens?and=(market_cap.gt.100000,market_cap.lt.200000)&limit=5&order=created_time.desc&select=*' },
+                { id: 'highMC', url: 'https://utvegumaxuxnpmzzmimk.supabase.co/rest/v1/tokens?market_cap=gt.200000&limit=5&order=created_time.desc&select=*' },
+                { id: 'lowRange', url: 'https://utvegumaxuxnpmzzmimk.supabase.co/rest/v1/tokens?and=(market_cap.gt.15000,market_cap.lt.40000)&limit=5&order=created_time.desc&select=*' },
+                { id: 'midLowRange', url: 'https://utvegumaxuxnpmzzmimk.supabase.co/rest/v1/tokens?and=(market_cap.gt.40000,market_cap.lt.90000)&limit=5&order=created_time.desc&select=*' }
+            ];
+
+            panels.forEach(panel => {
+                const refreshBtn = document.querySelector(`#${panel.id} .panel-refresh`);
+                if (refreshBtn) {
+                    refreshBtn.addEventListener('click', async () => {
+                        refreshBtn.classList.add('spinning');
+                        await fetchCoins(panel.url, panel.id);
+                        setTimeout(() => {
+                            refreshBtn.classList.remove('spinning');
+                        }, 1000);
+                    });
+                }
+            });
+
+            // Update fetchCoins function to handle individual panel refresh
+            async function fetchCoins(url, containerId) {
+                const container = document.querySelector(`#${containerId}`);
+                const list = container.querySelector('.list');
+                
+                // Add loading bar
+                const loadingBar = document.createElement('div');
+                loadingBar.className = 'loading-bar';
+                container.insertBefore(loadingBar, container.firstChild);
+                
+                list.innerHTML = '<div class="loading-text">Loading...</div>';
+                
+                try {
+                    loadingBar.style.width = '60%';
+                    const response = await axios.get(url, { headers: API_HEADERS });
+                    const coins = response.data;
+                    
+                    loadingBar.style.width = '100%';
+                    list.innerHTML = '';
+
+                    coins.forEach(coin => {
+                        const card = createCoinCard(coin);
+                        list.appendChild(card);
+                    });
+
+                    setTimeout(() => {
+                        loadingBar.remove();
+                    }, 500);
+
+                } catch (error) {
+                    console.error('Error fetching coins:', error);
+                    list.innerHTML = '<p>Error loading data.</p>';
+                    loadingBar.style.background = '#ff3366';
+                    loadingBar.style.width = '100%';
+                }
+            }
+
+            // Initial load
+            panels.forEach(panel => {
+                fetchCoins(panel.url, panel.id);
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</body>
+</html>
